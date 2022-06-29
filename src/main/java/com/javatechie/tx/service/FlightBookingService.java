@@ -18,11 +18,24 @@ import java.util.UUID;
 @Service
 public class FlightBookingService {
 
+	/*
+	 * Repository per info passeggeri, utilizzata solo per i metodi ereditati. 
+	 */
     @Autowired
     private PassengerInfoRepository passengerInfoRepository;
+
+	/*
+	 * Repository per info pagamenti, utilizzata solo per i metodi ereditati. 
+	 */
     @Autowired
     private PaymentInfoRepository paymentInfoRepository;
 
+    /*
+     * Metodo transactional, se viene sollevata un'eccezione fa il rollback in automatico.
+     * Permette di evitare incongruenze nei dati. 
+     * Il booking viene portato a termine solo se nell'account selezionato c'è denaro sufficiente. Altrimenti non succede niente. 
+     * @param request Richiesta contenente una passengerInfo e una PaymentInfo.
+     */
     @Transactional//(readOnly = false,isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRED)
     public FlightBookingAcknowledgement bookFlightTicket(FlightBookingRequest request) {
 
@@ -36,7 +49,11 @@ public class FlightBookingService {
         paymentInfo.setPassengerId(passengerInfo.getPId());
         paymentInfo.setAmount(passengerInfo.getFare());
         paymentInfoRepository.save(paymentInfo);
-        return new FlightBookingAcknowledgement("SUCCESS", passengerInfo.getFare(), UUID.randomUUID().toString().split("-")[0], passengerInfo);
 
+        return new FlightBookingAcknowledgement(
+        		"SUCCESS", 
+        		passengerInfo.getFare(), 
+        		UUID.randomUUID().toString().split("-")[0], 
+        		passengerInfo);
     }
 }
