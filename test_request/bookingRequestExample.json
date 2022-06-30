@@ -1,0 +1,18 @@
+{
+"passengerInfo":
+  {
+   "name": "Emanuele",
+   "email": "prova@gmail.com",
+   "source": "Rome",
+   "destination": "Prague",
+    "travelDate": "13-02-2022",
+    "pickupTime": "13:23",
+    "arrivalTime": "14:30",
+    "fare": "2000"
+  },
+"paymentInfo":
+  {
+    "accountNo": "acc1",
+    "cardType": "DEBIT"
+  }
+}
